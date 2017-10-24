@@ -6,4 +6,21 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-User.create([ { name: 'E', email: 'e@app' }, {name: 'j', email: 'j@app' }])
+users = User.create( [ { username: 'E'}, {username: 'j' }, {username: 'Da Vinci'} ] )
+
+artworks = Artwork.create ( [ {
+  title: 'Mona Lisa',
+  image_url: 'https://media1.britannica.com/eb-media/77/192577-049-F870243D.jpg',
+  artist_id: users.last.id
+  },
+  {
+    title: 'Roger the rabbit',
+    image_url: 'https://media1.britannica.com/eb-media/77/192577-049-F870243D.jpg',
+    artist_id: users.first.id }
+    ])
+
+ArtworkShare.create ([{ viewer_id: users.first.id, artwork_id: artworks.first.id},
+{ viewer_id: users.last.id, artwork_id: artworks.first.id}
+  ])
+
+Comment.create([{body: 'Lorem', user_id: users.first.id, artwork_id: artworks.first.id}])

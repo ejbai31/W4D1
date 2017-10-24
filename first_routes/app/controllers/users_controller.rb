@@ -2,11 +2,14 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all
+    if params[:query]
+      query = '%' + params[:query].downcase + '%'
+      @users = @users.where('lower(username) LIKE ?', query)
+    end
     render json: @users
   end
 
   def create
-    # render json: user_params
     @user = User.new(user_params)
     if @user.save
       render json: @user
@@ -35,7 +38,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(params[:id])
-    if User.delete(params[:id])
+    if @user.destroy
       render json: @user
     else
       render json: @user.errors.full_messages, status: 422
@@ -44,6 +47,6 @@ class UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:name, :email)
+    params.require(:user).permit(:username)
   end
 end
